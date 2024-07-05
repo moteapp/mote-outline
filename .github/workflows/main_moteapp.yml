@@ -41,6 +41,8 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+      - uses: actions/checkout@v2
+
       - name: Azure Login with secrets.AZURE_CREDENTIALS
         uses: azure/login@v1
         with:
