@@ -586,7 +586,7 @@ export class Environment {
    * The product name
    */
   @Public
-  public APP_NAME = "Outline";
+  public APP_NAME = "Mote";
 
   /**
    * Returns true if the current installation is the cloud hosted version at
@@ -597,6 +597,7 @@ export class Environment {
       "https://app.getoutline.com",
       "https://app.outline.dev",
       "https://app.outline.dev:3000",
+      "https://mote.dev",
     ].includes(this.URL);
   }
 
