@@ -6,13 +6,6 @@ services:
       - "80:3000"
     volumes:
       - storage-data:/var/lib/mote/data
-    depends_on:
-      - redis
-
-  redis:
-    image: mcr.microsoft.com/cbl-mariner/base/redis:6.2
-    ports:
-      - "6379:6379"
 
 volumes:
   storage-data:
