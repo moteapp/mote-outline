@@ -1,0 +1,63 @@
+version: "3.2"
+services:
+  mote:
+    image: moteapp.azurecr.io/mote-app:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - storage-data:/var/lib/mote/data
+    depends_on:
+      - postgres
+      - redis
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 3
+
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - database-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "outline", "-U", "user"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "pass"
+      POSTGRES_DB: "mote"
+
+  https-portal:
+    image: steveltn/https-portal
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - mote
+    restart: always
+    volumes:
+      - https-portal-data:/var/lib/https-portal
+    healthcheck:
+      test: ["CMD", "service", "nginx", "status"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    environment:
+      DOMAINS: "mote.dev -> http://mote:3000"
+      STAGE: "production"
+      WEBSOCKET: "true"
+      CLIENT_MAX_BODY_SIZE: "0"
+
+volumes:
+  https-portal-data:
+  storage-data:
+  database-data:

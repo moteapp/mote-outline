@@ -54,4 +54,4 @@ jobs:
         with:
           app-name: "moteapp"
           slot-name: "production"
-          configuration-file: ./docker-compose.yml
+          configuration-file: ./docker-compose-prod.yml
