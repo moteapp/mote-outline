@@ -7,12 +7,7 @@ WORKDIR $APP_PATH
 COPY ./package.json ./
 COPY ./patches ./patches
 
-RUN  apt-get update \
-  && apt-get install -y wget \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN yarn install --no-optional --frozen-lockfile --network-timeout 1000000 && \
-  yarn cache clean
+RUN yarn install --no-optional --frozen-lockfile --network-timeout 1000000 
 
 COPY . .
 ARG CDN_URL
