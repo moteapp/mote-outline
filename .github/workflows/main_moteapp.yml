@@ -49,4 +49,4 @@ jobs:
           slot-name: "production"
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_258c5879973c4446a20eb2e45910993b }}
           images: "moteapp.azurecr.io/mote-app:latest"
-          file: ./docker-compose.yml
+          configuration-file: ./docker-compose.yml
