@@ -16,7 +16,7 @@ import prefetchTags from "@server/utils/prefetchTags";
 import readManifestFile from "@server/utils/readManifestFile";
 
 const readFile = util.promisify(fs.readFile);
-const entry = "app/index.tsx";
+const entry = "apps/app/index.tsx";
 const viteHost = env.URL.replace(`:${env.PORT}`, ":3001");
 
 let indexHtmlCache: Buffer | undefined;
@@ -39,7 +39,7 @@ const readIndexFile = async (): Promise<Buffer> => {
   }
 
   return (indexHtmlCache = await readFile(
-    path.join(__dirname, "../../app/index.html")
+    path.join(__dirname, "../../apps/app/index.html")
   ));
 };
 
@@ -88,9 +88,8 @@ export const renderApp = async (
   `;
 
   const scriptTags = env.isProduction
-    ? `<script type="module" nonce="${ctx.state.cspNonce}" src="${
-        env.CDN_URL || ""
-      }/static/${readManifestFile()[entry]["file"]}"></script>`
+    ? `<script type="module" nonce="${ctx.state.cspNonce}" src="${env.CDN_URL || ""
+    }/static/${readManifestFile()[entry]["file"]}"></script>`
     : `<script type="module" nonce="${ctx.state.cspNonce}">
         import RefreshRuntime from "${viteHost}/static/@react-refresh"
         RefreshRuntime.injectIntoGlobalHook(window)

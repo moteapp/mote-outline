@@ -34,9 +34,9 @@ export default () =>
       fs:
         environment.NODE_ENV === "development"
           ? {
-              // Allow serving files from one level up to the project root
-              allow: [".."],
-            }
+            // Allow serving files from one level up to the project root
+            allow: [".."],
+          }
           : { strict: true },
     },
     plugins: [
@@ -151,7 +151,7 @@ export default () =>
     },
     resolve: {
       alias: {
-        "~": path.resolve(__dirname, "./app"),
+        "~": path.resolve(__dirname, "./apps/app"),
         "@shared": path.resolve(__dirname, "./shared"),
       },
     },
@@ -170,7 +170,7 @@ export default () =>
       },
       rollupOptions: {
         input: {
-          index: "./app/index.tsx",
+          index: "./apps/app/index.tsx",
         },
         output: {
           assetFileNames: 'assets/[name].[hash][extname]',

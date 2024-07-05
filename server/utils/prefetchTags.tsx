@@ -42,8 +42,8 @@ if (env.isProduction) {
   ];
 
   Array.from([
-    ...returnFileAndImportsFromManifest(manifest, "app/index.tsx"),
-    ...returnFileAndImportsFromManifest(manifest, "app/editor/index.tsx"),
+    ...returnFileAndImportsFromManifest(manifest, "apps/app/index.tsx"),
+    ...returnFileAndImportsFromManifest(manifest, "apps/app/editor/index.tsx"),
   ]).forEach((file) => {
     if (file.endsWith(".js")) {
       prefetchTags.push(

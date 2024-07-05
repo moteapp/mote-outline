@@ -2,7 +2,7 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Badge from "~/components/Badge";
-import { version } from "../../../../package.json";
+import { version } from "../../../../../package.json";
 import SidebarLink from "./SidebarLink";
 
 export default function Version() {

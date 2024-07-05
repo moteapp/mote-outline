@@ -3,6 +3,9 @@
   "private": true,
   "license": "Business Source License 1.1",
   "main": "index.js",
+  "workspaces": [
+    "apps"
+  ],
   "scripts": {
     "clean": "rimraf build",
     "copy:i18n": "mkdir -p ./build/shared/i18n && cp -R ./shared/i18n/locales ./build/shared/i18n",
@@ -349,6 +352,7 @@
     "jest-fetch-mock": "^3.0.3",
     "lint-staged": "^13.3.0",
     "nodemon": "^3.1.4",
+    "nx": "^19.4.0",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.8.8",
     "react-refresh": "^0.14.0",
