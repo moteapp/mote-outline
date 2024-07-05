@@ -13,11 +13,6 @@ services:
     image: mcr.microsoft.com/cbl-mariner/base/redis:6.2
     ports:
       - "6379:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 30s
-      retries: 3
 
 volumes:
   storage-data:
