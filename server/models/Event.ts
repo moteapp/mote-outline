@@ -11,7 +11,6 @@ import {
   BeforeCreate,
   BelongsTo,
   Column,
-  IsIP,
   IsUUID,
   Table,
   DataType,
@@ -49,7 +48,6 @@ class Event extends IdModel<
   /**
    * The originating IP address of the event.
    */
-  @IsIP
   @Column
   ip: string | null;
 

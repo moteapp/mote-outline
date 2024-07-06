@@ -65,16 +65,7 @@ function ApiKeys() {
         <Trans
           defaults="Create personal API keys to authenticate with the API and programatically control
           your workspace's data. API keys have the same permissions as your user account.
-          For more details see the <em>developer documentation</em>."
-          components={{
-            em: (
-              <a
-                href="https://www.getoutline.com/developers"
-                target="_blank"
-                rel="noreferrer"
-              />
-            ),
-          }}
+          For more details see the developer documentation."
         />
       </Text>
       <PaginatedList

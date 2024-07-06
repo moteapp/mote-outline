@@ -60,18 +60,7 @@ function Preferences() {
         name="language"
         description={
           <>
-            <Trans>
-              Choose the interface language. Community translations are accepted
-              though our{" "}
-              <a
-                href="https://translate.getoutline.com"
-                target="_blank"
-                rel="noreferrer"
-              >
-                translation portal
-              </a>
-              .
-            </Trans>
+            <Trans>Choose the interface language.</Trans>
           </>
         }
       >
