@@ -155,7 +155,6 @@ class User extends ParanoidModel<
   @Column
   lastActiveAt: Date | null;
 
-  @IsIP
   @Column
   lastActiveIp: string | null;
 

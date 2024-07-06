@@ -58,10 +58,6 @@ function AuthenticationProvider(props: Props) {
   const href = getRedirectUrl(authUrl);
 
   if (id === "email") {
-    if (isCreate) {
-      return null;
-    }
-
     return (
       <Wrapper>
         <Form method="POST" action="/auth/email" onSubmit={handleSubmitEmail}>

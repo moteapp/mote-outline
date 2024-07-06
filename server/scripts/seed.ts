@@ -34,12 +34,20 @@ export default async function main(exit = false) {
 
     console.log(
       "email",
-      `✅ Seed done – sign-in link: ${
-        env.URL
+      `✅ Seed done – sign-in link: ${env.URL
       }/auth/email.callback?token=${user.getEmailSigninToken()}`
     );
   } else {
-    console.log("Team already exists, aborting");
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+    console.log(
+      "email",
+      `✅ Seed done – sign-in link: ${env.URL
+      }/auth/email.callback?token=${user?.getEmailSigninToken()}`
+    );
   }
 
   if (exit) {

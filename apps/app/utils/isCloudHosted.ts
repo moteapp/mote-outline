@@ -7,6 +7,7 @@ const isCloudHosted = [
   "https://app.getoutline.com",
   "https://app.outline.dev",
   "https://app.outline.dev:3000",
+  "https://mote.dev",
 ].includes(env.URL);
 
 export default isCloudHosted;
