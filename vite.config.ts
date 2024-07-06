@@ -106,8 +106,8 @@ export default () =>
           ],
         },
         manifest: {
-          name: "Outline",
-          short_name: "Outline",
+          name: "Mote",
+          short_name: "Mote",
           theme_color: "#fff",
           background_color: "#fff",
           start_url: "/",

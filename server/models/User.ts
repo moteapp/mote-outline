@@ -15,7 +15,6 @@ import { type InstanceUpdateOptions } from "sequelize";
 import {
   Table,
   Column,
-  IsIP,
   IsEmail,
   Default,
   IsIn,
@@ -162,7 +161,6 @@ class User extends ParanoidModel<
   @Column
   lastSignedInAt: Date | null;
 
-  @IsIP
   @Column
   lastSignedInIp: string | null;
 
