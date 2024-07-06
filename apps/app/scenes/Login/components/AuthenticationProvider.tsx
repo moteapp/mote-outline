@@ -58,9 +58,11 @@ function AuthenticationProvider(props: Props) {
   const href = getRedirectUrl(authUrl);
 
   if (id === "email") {
+    // If it's create mode, we need to enable passport magic link
+    const action = isCreate ? "/auth/magiclink" : "/auth/email";
     return (
       <Wrapper>
-        <Form method="POST" action="/auth/email" onSubmit={handleSubmitEmail}>
+        <Form method="POST" action={action} onSubmit={handleSubmitEmail}>
           {showEmailSignin ? (
             <>
               <InputLarge

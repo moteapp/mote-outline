@@ -30,6 +30,8 @@ export default function onerror(app: Koa) {
       return;
     }
 
+    console.log("err->", err);
+
     err = wrapInNativeError(err);
 
     if (err instanceof SequelizeValidationError) {
@@ -135,7 +137,7 @@ function wrapInNativeError(err: any): Error {
     try {
       errMsg = JSON.stringify(err);
       // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) { }
   }
   const newError = InternalError(`Non-error thrown: ${errMsg}`);
   // err maybe an object, try to copy the name, message and stack to the new error instance

@@ -34,10 +34,13 @@
     "no-useless-escape": "off",
     "no-shadow": "off",
     "es/no-regexp-lookbehind-assertions": "error",
-    "react/self-closing-comp": ["error", {
-      "component": true,
-      "html": true
-    }],
+    "react/self-closing-comp": [
+      "error",
+      {
+        "component": true,
+        "html": true
+      }
+    ],
     "@typescript-eslint/no-shadow": [
       "warn",
       {
@@ -46,7 +49,7 @@
         "ignoreTypeValueShadow": true
       }
     ],
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/await-thenable": "error",
     "@typescript-eslint/no-misused-promises": [
@@ -63,8 +66,15 @@
         "ignoreRestSiblings": true
       }
     ],
-    "padding-line-between-statements": ["error", { "blankLine": "always", "prev": "*", "next": "export" }],
-    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "*", "next": "export" }
+    ],
+    "lines-between-class-members": [
+      "error",
+      "always",
+      { "exceptAfterSingleLine": true }
+    ],
     "lodash/import-scope": ["warn", "method"],
     "import/no-named-as-default": "off",
     "import/no-named-as-default-member": "off",
@@ -123,7 +133,9 @@
       "error",
       {
         "printWidth": 80,
-        "trailingComma": "es5"
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "singleQuote": true
       }
     ]
   },
