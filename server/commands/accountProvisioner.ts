@@ -1,25 +1,25 @@
-import path from "path";
-import { readFile } from "fs-extra";
-import invariant from "invariant";
-import { CollectionPermission, UserRole } from "@shared/types";
-import WelcomeEmail from "@server/emails/templates/WelcomeEmail";
-import env from "@server/env";
+import path from 'path';
+import { readFile } from 'fs-extra';
+import invariant from 'invariant';
+import { CollectionPermission, UserRole } from '@shared/types';
+import WelcomeEmail from '@server/emails/templates/WelcomeEmail';
+import env from '@server/env';
 import {
   InvalidAuthenticationError,
   AuthenticationProviderDisabledError,
-} from "@server/errors";
-import { traceFunction } from "@server/logging/tracing";
+} from '@server/errors';
+import { traceFunction } from '@server/logging/tracing';
 import {
   AuthenticationProvider,
   Collection,
   Document,
   Team,
   User,
-} from "@server/models";
-import { DocumentHelper } from "@server/models/helpers/DocumentHelper";
-import { sequelize } from "@server/storage/database";
-import teamProvisioner from "./teamProvisioner";
-import userProvisioner from "./userProvisioner";
+} from '@server/models';
+import { DocumentHelper } from '@server/models/helpers/DocumentHelper';
+import { sequelize } from '@server/storage/database';
+import teamProvisioner from './teamProvisioner';
+import userProvisioner from './userProvisioner';
 
 type Props = {
   /** The IP address of the incoming request */
@@ -99,20 +99,22 @@ async function accountProvisioner({
   } catch (err) {
     // The account could not be provisioned for the provided teamId
     // check to see if we can try authentication using email matching only
-    if (err.id === "invalid_authentication") {
-      const authenticationProvider = await AuthenticationProvider.findOne({
-        where: {
-          name: authenticationProviderParams.name, // example: "google"
-          teamId: teamParams.teamId,
-        },
-        include: [
-          {
-            model: Team,
-            as: "team",
-            required: true,
+    if (err.id === 'invalid_authentication') {
+      const authenticationProvider = await AuthenticationProvider.findOne(
+        {
+          where: {
+            name: authenticationProviderParams.name, // example: "google"
+            teamId: teamParams.teamId,
           },
-        ],
-      });
+          include: [
+            {
+              model: Team,
+              as: 'team',
+              required: true,
+            },
+          ],
+        }
+      );
 
       if (authenticationProvider) {
         emailMatchOnly = true;
@@ -133,7 +135,7 @@ async function accountProvisioner({
     }
   }
 
-  invariant(result, "Team creator result must exist");
+  invariant(result, 'Team creator result must exist');
   const { authenticationProvider, team, isNewTeam } = result;
 
   if (!authenticationProvider.enabled) {
@@ -151,12 +153,14 @@ async function accountProvisioner({
     authentication: emailMatchOnly
       ? undefined
       : {
-          authenticationProviderId: authenticationProvider.id,
-          ...authenticationParams,
-          expiresAt: authenticationParams.expiresIn
-            ? new Date(Date.now() + authenticationParams.expiresIn * 1000)
-            : undefined,
-        },
+        authenticationProviderId: authenticationProvider.id,
+        ...authenticationParams,
+        expiresAt: authenticationParams.expiresIn
+          ? new Date(
+            Date.now() + authenticationParams.expiresIn * 1000
+          )
+          : undefined,
+      },
   });
   const { isNewUser, user } = result;
 
@@ -201,7 +205,7 @@ async function provisionFirstCollection(team: Team, user: User) {
   await sequelize.transaction(async (transaction) => {
     const collection = await Collection.create(
       {
-        name: "Welcome",
+        name: 'Welcome',
         description: `This collection is a quick guide to what ${env.APP_NAME} is all about. Feel free to delete this collection once your team is up to speed with the basics!`,
         teamId: team.id,
         createdById: user.id,
@@ -216,16 +220,15 @@ async function provisionFirstCollection(team: Team, user: User) {
     // For the first collection we go ahead and create some intitial documents to get
     // the team started. You can edit these in /server/onboarding/x.md
     const onboardingDocs = [
-      "Integrations & API",
-      "Our Editor",
-      "Getting Started",
-      "What is Outline",
+      'Our Editor',
+      'Getting Started',
+      'What is Outline',
     ];
 
     for (const title of onboardingDocs) {
       const text = await readFile(
-        path.join(process.cwd(), "server", "onboarding", `${title}.md`),
-        "utf8"
+        path.join(process.cwd(), 'server', 'onboarding', `${title}.md`),
+        'utf8'
       );
       const document = await Document.create(
         {
@@ -252,5 +255,5 @@ async function provisionFirstCollection(team: Team, user: User) {
 }
 
 export default traceFunction({
-  spanName: "accountProvisioner",
+  spanName: 'accountProvisioner',
 })(accountProvisioner);

@@ -68,9 +68,6 @@ async function teamCreator({
     }
   );
 
-  const availableSubdomain = await findAvailableSubdomain(team, subdomain);
-  await team.update({ subdomain: availableSubdomain }, { transaction });
-
   return team;
 }
 
@@ -83,13 +80,13 @@ async function findAvailableSubdomain(team: Team, requestedSubdomain: string) {
   });
   let subdomain =
     normalizedSubdomain.length < 3 ||
-    RESERVED_SUBDOMAINS.includes(normalizedSubdomain)
+      RESERVED_SUBDOMAINS.includes(normalizedSubdomain)
       ? "team"
       : normalizedSubdomain;
 
   let append = 0;
 
-  for (;;) {
+  for (; ;) {
     const existing = await Team.findOne({ where: { subdomain } });
 
     if (existing) {
