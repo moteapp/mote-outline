@@ -600,9 +600,7 @@ class DocumentScene extends React.Component<Props> {
             </MeasuredContainer>
             {isShare &&
               !parseDomain(window.location.origin).custom &&
-              !auth.user && (
-                <Branding href="//www.getoutline.com?ref=sharelink" />
-              )}
+              !auth.user && <Branding href="//mote.dev?ref=sharelink" />}
           </Container>
           {!isShare && (
             <Footer>
