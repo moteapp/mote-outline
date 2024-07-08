@@ -57,10 +57,10 @@ const strategy = new MagicLinkStrategy(
             },
             authenticationProvider: {
                 name: providerName,
-                providerId: providerName,
+                providerId: user.email,
             },
             authentication: {
-                providerId: providerName,
+                providerId: user.email,
                 scopes: [],
             },
         });

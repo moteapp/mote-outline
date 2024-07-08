@@ -67,10 +67,6 @@ ${teamUrl}/home
             collection to help document your processes, create playbooks, or
             plan your teams work.
           </p>
-          <p>
-            Or, learn more about everything Outline can do in{" "}
-            <a href="https://docs.getoutline.com/s/guide">the guide</a>.
-          </p>
           <EmptySpace height={10} />
           <p>
             <Button href={welcomeLink}>Open {env.APP_NAME}</Button>
