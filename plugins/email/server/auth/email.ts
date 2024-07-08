@@ -87,6 +87,10 @@ router.post(
             }
         );
         await strategy.sendToken(payload, token);
+        // respond with success regardless of whether an email was sent
+        ctx.body = {
+            success: true,
+        };
     }
 );
 router.get('magiclink.callback', passportMiddleware(providerName));
