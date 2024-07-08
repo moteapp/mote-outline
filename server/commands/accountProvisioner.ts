@@ -222,7 +222,7 @@ async function provisionFirstCollection(team: Team, user: User) {
     const onboardingDocs = [
       'Our Editor',
       'Getting Started',
-      'What is Outline',
+      'What is Mote',
     ];
 
     for (const title of onboardingDocs) {
