@@ -1,7 +1,6 @@
 import passport from '@outlinewiki/koa-passport';
 import JWT from 'jsonwebtoken';
 import Router from 'koa-router';
-// import passport from "passport";
 import { NotificationEventType } from '@shared/types';
 import { parseDomain } from '@shared/utils/domains';
 import accountProvisioner from '@server/commands/accountProvisioner';
@@ -118,7 +117,11 @@ router.post(
         }
 
         if (!team?.emailSigninEnabled) {
-            throw AuthorizationError();
+            throw AuthorizationError(
+                `Email sign-in is not enabled for this team with domain: ${JSON.stringify(
+                    domain
+                )}`
+            );
         }
 
         const user = await User.scope('withAuthentications').findOne({
