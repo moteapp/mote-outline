@@ -1,5 +1,6 @@
 dist
 build
+node_modules
 node_modules/*
 .env
 .env.local
@@ -14,3 +15,4 @@ data/*
 *.pem
 *.key
 *.cert
+.next
