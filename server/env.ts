@@ -598,6 +598,7 @@ export class Environment {
       "https://app.outline.dev",
       "https://app.outline.dev:3000",
       "https://mote.dev",
+      "https://app.mote.dev",
     ].includes(this.URL);
   }
 
