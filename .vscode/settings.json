@@ -1,7 +1,7 @@
 {
-  "javascript.validate.enable": true,
-  "javascript.format.enable": true,
-  "typescript.validate.enable": true,
-  "typescript.format.enable": true,
-  "editor.formatOnSave": true,
+    "javascript.validate.enable": true,
+    "javascript.format.enable": true,
+    "typescript.validate.enable": true,
+    "typescript.format.enable": true,
+    "editor.formatOnSave": false
 }

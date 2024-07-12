@@ -103,30 +103,8 @@ router.post(
 
         const domain = parseDomain(ctx.request.hostname);
 
-        let team: Team | null | undefined;
-        if (!env.isCloudHosted) {
-            team = await Team.scope('withAuthenticationProviders').findOne();
-        } else if (domain.custom) {
-            team = await Team.scope('withAuthenticationProviders').findOne({
-                where: { domain: domain.host },
-            });
-        } else if (domain.teamSubdomain) {
-            team = await Team.scope('withAuthenticationProviders').findOne({
-                where: { subdomain: domain.teamSubdomain },
-            });
-        }
-
-        if (!team?.emailSigninEnabled) {
-            throw AuthorizationError(
-                `Email sign-in is not enabled for this team with domain: ${JSON.stringify(
-                    domain
-                )}`
-            );
-        }
-
         const user = await User.scope('withAuthentications').findOne({
             where: {
-                teamId: team.id,
                 email: email.toLowerCase(),
             },
         });
@@ -138,15 +116,30 @@ router.post(
             return;
         }
 
+        const team = await Team.scope('withAuthenticationProviders').findByPk(
+            user.teamId
+        );
+
+        if (!team?.emailSigninEnabled) {
+            throw AuthorizationError(
+                `Email sign-in is not enabled for this team with domain: ${JSON.stringify(
+                    domain
+                )}`
+            );
+        }
+
         // If the user matches an email address associated with an SSO
         // provider then just forward them directly to that sign-in page
         if (user.authentications.length) {
             const authenticationProvider =
                 user.authentications[0].authenticationProvider;
-            ctx.body = {
-                redirect: `${team.url}/auth/${authenticationProvider?.name}`,
-            };
-            return;
+            // Redirect to the provider if it's not the email provider
+            if (authenticationProvider?.name !== providerName) {
+                ctx.body = {
+                    redirect: `${team.url}/auth/${authenticationProvider?.name}`,
+                };
+                return;
+            }
         }
 
         // send email to users email address with a short-lived token
