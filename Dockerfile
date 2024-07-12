@@ -1,4 +1,4 @@
-ARG APP_PATH=/opt/outline
+ARG APP_PATH=/opt/mote
 FROM node:20-slim as base
 
 ARG APP_PATH
@@ -21,7 +21,7 @@ RUN yarn install --production=true --frozen-lockfile --network-timeout 1000000 &
 # ---
 FROM node:20-slim AS runner
 
-LABEL org.opencontainers.image.source="https://github.com/outline/outline"
+LABEL org.opencontainers.image.source="https://github.com/moteapp/mote"
 
 ARG APP_PATH
 WORKDIR $APP_PATH
@@ -38,15 +38,15 @@ COPY --from=base $APP_PATH/package.json ./package.json
 RUN addgroup --gid 1001 nodejs && \
   adduser --uid 1001 --ingroup nodejs nodejs && \
   chown -R nodejs:nodejs $APP_PATH/build && \
-  mkdir -p /var/lib/outline && \
-	chown -R nodejs:nodejs /var/lib/outline
+  mkdir -p /var/lib/mote && \
+	chown -R nodejs:nodejs /var/lib/mote
 
-ENV FILE_STORAGE_LOCAL_ROOT_DIR /var/lib/outline/data
+ENV FILE_STORAGE_LOCAL_ROOT_DIR /var/lib/mote/data
 RUN mkdir -p "$FILE_STORAGE_LOCAL_ROOT_DIR" && \
   chown -R nodejs:nodejs "$FILE_STORAGE_LOCAL_ROOT_DIR" && \
   chmod 1777 "$FILE_STORAGE_LOCAL_ROOT_DIR"
 
-VOLUME /var/lib/outline/data
+VOLUME /var/lib/mote/data
 
 USER nodejs
 
