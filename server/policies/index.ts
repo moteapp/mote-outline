@@ -1,35 +1,35 @@
 import {
-  Attachment,
-  FileOperation,
-  Team,
-  User,
-  Collection,
-  Comment,
-  Document,
-  Group,
-  Notification,
-  UserMembership,
-} from "@server/models";
-import { _abilities, _can, _cannot, _authorize } from "./cancan";
-import "./apiKey";
-import "./attachment";
-import "./authenticationProvider";
-import "./collection";
-import "./comment";
-import "./document";
-import "./fileOperation";
-import "./integration";
-import "./pins";
-import "./searchQuery";
-import "./share";
-import "./star";
-import "./subscription";
-import "./user";
-import "./team";
-import "./group";
-import "./webhookSubscription";
-import "./notification";
-import "./userMembership";
+    Attachment,
+    FileOperation,
+    Team,
+    User,
+    Collection,
+    Comment,
+    Document,
+    Group,
+    Notification,
+    UserMembership,
+} from '@server/models';
+import { _abilities, _can, _cannot, _authorize } from './cancan';
+import './apiKey';
+import './attachment';
+import './authenticationProvider';
+import './collection';
+import './comment';
+import './document';
+import './fileOperation';
+import './integration';
+import './pins';
+import './searchQuery';
+import './share';
+import './star';
+import './subscription';
+import './user';
+import './team';
+import './group';
+import './webhookSubscription';
+import './notification';
+import './userMembership';
 
 type Policy = Record<string, boolean>;
 
@@ -49,33 +49,36 @@ export const abilities = _abilities;
  * and sent in API responses to allow clients to adjust which UI is displayed.
  */
 export function serialize(
-  model: User,
-  target:
-    | Attachment
-    | Collection
-    | Comment
-    | FileOperation
-    | Team
-    | Document
-    | User
-    | Group
-    | Notification
-    | UserMembership
-    | null
+    model: User,
+    target:
+        | Attachment
+        | Collection
+        | Comment
+        | FileOperation
+        | Team
+        | Document
+        | User
+        | Group
+        | Notification
+        | UserMembership
+        | null
 ): Policy {
-  const output = {};
-  abilities.forEach((ability) => {
-    if (model instanceof ability.model && target instanceof ability.target) {
-      let response = true;
+    const output = {};
+    abilities.forEach((ability) => {
+        if (
+            model instanceof ability.model &&
+            target instanceof ability.target
+        ) {
+            let response = true;
 
-      try {
-        response = can(model, ability.action, target);
-      } catch (err) {
-        response = false;
-      }
+            try {
+                response = can(model, ability.action, target);
+            } catch (err) {
+                response = false;
+            }
 
-      output[ability.action] = response;
-    }
-  });
-  return output;
+            output[ability.action] = response;
+        }
+    });
+    return output;
 }
