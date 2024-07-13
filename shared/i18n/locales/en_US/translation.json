@@ -20,6 +20,8 @@
   "The URL of your Matomo instance. If you are using Matomo Cloud it will end in matomo.cloud/": "The URL of your Matomo instance. If you are using Matomo Cloud it will end in matomo.cloud/",
   "Site ID": "Site ID",
   "An ID that uniquely identifies the website in your Matomo instance.": "An ID that uniquely identifies the website in your Matomo instance.",
+  "Sorry, an answer could not be found in the collection, try widening your search.": "Sorry, an answer could not be found in the collection, try widening your search.",
+  "Sorry, an answer could not be found in the workspace, try widening your search.": "Sorry, an answer could not be found in the workspace, try widening your search.",
   "Add to Slack": "Add to Slack",
   "document published": "document published",
   "document updated": "document updated",

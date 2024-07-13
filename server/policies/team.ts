@@ -32,3 +32,19 @@ allow(User, ['delete', 'audit'], Team, (actor, team) =>
         isTeamAdmin(actor, team)
     )
 );
+
+allow(User, 'audit', Team, isTeamAdmin);
+
+allow(
+    User,
+    ['createPlanSubscription', 'readPlanSubscription'],
+    Team,
+    isTeamModel
+);
+
+allow(
+    User,
+    ['cancelPlanSubscription', 'updatePlanSubscription'],
+    Team,
+    isTeamAdmin
+);

@@ -1057,5 +1057,8 @@
   "{{ user }} updated {{ timeAgo }}": "{{ timeAgo }} 由 {{ user }} 更新",
   "You created {{ timeAgo }}": "{{ timeAgo }} 由你创建",
   "{{ user }} created {{ timeAgo }}": "{{ timeAgo }} 由 {{ user }} 创建",
-  "Uploading": "上传中"
+  "Uploading": "上传中",
+  "AI answers": "基于AI的问答",
+  "Use AI to directly answer searched questions using content in your workspace.": "通过使用工作区中的内容，AI将可以直接回答搜索的问题。",
+  "AI generated answer based on related documents in your workspace": "基于工作区中相关文档生成的AI答案"
 }

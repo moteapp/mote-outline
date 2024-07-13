@@ -1,60 +1,65 @@
-import Tippy, { TippyProps } from "@tippyjs/react";
-import * as React from "react";
-import styled, { createGlobalStyle } from "styled-components";
-import { roundArrow } from "tippy.js";
-import { s } from "@shared/styles";
-import useMobile from "~/hooks/useMobile";
+import Tippy, { TippyProps } from '@tippyjs/react';
+import * as React from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
+import { roundArrow } from 'tippy.js';
+import { s } from '@shared/styles';
+import useMobile from '~/hooks/useMobile';
 
-export type Props = Omit<TippyProps, "content" | "theme"> & {
-  /** The content to display in the tooltip. */
-  content?: React.ReactChild | React.ReactChild[];
-  /** A keyboard shortcut to display next to the content */
-  shortcut?: React.ReactNode;
+export type Props = Omit<TippyProps, 'content' | 'theme'> & {
+    /** The content to display in the tooltip. */
+    content?: React.ReactChild | React.ReactChild[];
+    /** A keyboard shortcut to display next to the content */
+    shortcut?: React.ReactNode;
 };
 
-function Tooltip({ shortcut, content: tooltip, delay = 50, ...rest }: Props) {
-  const isMobile = useMobile();
+function Tooltip({
+    shortcut,
+    content: tooltip = '',
+    delay = 50,
+    ...rest
+}: Props) {
+    const isMobile = useMobile();
 
-  let content = <>{tooltip}</>;
+    let content = <>{tooltip}</>;
 
-  if (!tooltip || isMobile) {
-    return rest.children ?? null;
-  }
+    if (!tooltip || isMobile) {
+        return rest.children ?? null;
+    }
 
-  if (shortcut) {
-    content = (
-      <>
-        {tooltip} &middot; <Shortcut>{shortcut}</Shortcut>
-      </>
+    if (shortcut) {
+        content = (
+            <>
+                {tooltip} &middot; <Shortcut>{shortcut}</Shortcut>
+            </>
+        );
+    }
+
+    return (
+        <Tippy
+            arrow={roundArrow}
+            animation="shift-away"
+            content={content}
+            delay={delay}
+            duration={[200, 150]}
+            inertia
+            {...rest}
+        />
     );
-  }
-
-  return (
-    <Tippy
-      arrow={roundArrow}
-      animation="shift-away"
-      content={content}
-      delay={delay}
-      duration={[200, 150]}
-      inertia
-      {...rest}
-    />
-  );
 }
 
 const Shortcut = styled.kbd`
-  position: relative;
-  top: -2px;
+    position: relative;
+    top: -2px;
 
-  display: inline-block;
-  padding: 2px 4px;
-  font: 10px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
-    monospace;
-  line-height: 10px;
-  color: ${s("tooltipBackground")};
-  vertical-align: middle;
-  background-color: ${s("tooltipText")};
-  border-radius: 3px;
+    display: inline-block;
+    padding: 2px 4px;
+    font: 10px 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+        monospace;
+    line-height: 10px;
+    color: ${s('tooltipBackground')};
+    vertical-align: middle;
+    background-color: ${s('tooltipText')};
+    border-radius: 3px;
 `;
 
 export const TooltipStyles = createGlobalStyle`
@@ -66,8 +71,8 @@ export const TooltipStyles = createGlobalStyle`
   }
   .tippy-box{
       position:relative;
-      background-color: ${s("tooltipBackground")};
-      color: ${s("tooltipText")};
+      background-color: ${s('tooltipBackground')};
+      color: ${s('tooltipText')};
       border-radius:4px;
       font-size:13px;
       line-height:1.4;
@@ -119,7 +124,7 @@ export const TooltipStyles = createGlobalStyle`
   .tippy-arrow{
       width:16px;
       height:16px;
-      color: ${s("tooltipBackground")};
+      color: ${s('tooltipBackground')};
   }
   .tippy-arrow:before{
       content:"";
@@ -166,7 +171,7 @@ export const TooltipStyles = createGlobalStyle`
   .tippy-svg-arrow{
       width:16px;
       height:16px;
-      fill: ${s("tooltipBackground")};
+      fill: ${s('tooltipBackground')};
       text-align:initial
   }
   .tippy-svg-arrow,.tippy-svg-arrow>svg{
