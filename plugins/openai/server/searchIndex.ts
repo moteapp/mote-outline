@@ -5,7 +5,6 @@ import { DocumentHelper } from '@server/models/helpers/DocumentHelper';
 import { DocumentVector } from './models/DocumentVector';
 import { MoteAI } from './openai';
 import * as vector from './storage/vector';
-import { ChatCompletionMessageParam } from 'openai/resources';
 
 export class SearchIndex {
     static initialized: boolean = false;

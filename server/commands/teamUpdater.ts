@@ -66,9 +66,7 @@ const teamUpdater = async ({ params, user, team, ip, transaction }: Props) => {
     }
 
     if (preferences) {
-        console.log('preferences:', preferences);
         for (const value of Object.values(TeamPreference)) {
-            console.log('try set value:', value);
             if (has(preferences, value)) {
                 team.setPreference(value, preferences[value]);
             }

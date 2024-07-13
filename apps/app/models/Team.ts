@@ -99,7 +99,6 @@ class Team extends Model {
         key: T,
         defaultValue?: TeamPreferences[T]
     ): TeamPreferences[T] | false {
-        console.log('preferences', this.preferences?.[key])
         return (
             this.preferences?.[key] ??
             TeamPreferenceDefaults[key] ??

@@ -15,19 +15,14 @@ function Head() {
                 <p className="font-bold text-inherit">Mote</p>
             </NavbarBrand>
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                <NavbarItem>
-                    <Link color="foreground" href="#">
-                        Features
-                    </Link>
-                </NavbarItem>
-                <NavbarItem isActive>
-                    <Link href="#" aria-current="page">
-                        Customers
+                <NavbarItem >
+                    <Link href="https://app.mote.dev/s/6283fc71-97c7-4977-abac-e84fde62fed6/doc/5l255so5oyh5y2x-xEYlYD6nRS" aria-current="page">
+                        使用指南
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link color="foreground" href="#">
-                        Integrations
+                    <Link color="foreground" href="https://app.mote.dev/s/f80f2e02-2578-453b-977d-e11964be359b/doc/5pu05paw5pel5bx-GWOY2mE8TJ">
+                        更新日志
                     </Link>
                 </NavbarItem>
             </NavbarContent>
