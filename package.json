@@ -1,5 +1,5 @@
 {
-    "name": "outline",
+    "name": "mote",
     "private": true,
     "license": "Business Source License 1.1",
     "main": "index.js",
@@ -380,5 +380,5 @@
         "qs": "6.9.7",
         "rollup": "^4.5.1"
     },
-    "version": "0.1.0-240712444"
+    "version": "0.1.1-240713642"
 }

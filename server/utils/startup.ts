@@ -5,7 +5,7 @@ import Logger from '@server/logging/Logger';
 import AuthenticationProvider from '@server/models/AuthenticationProvider';
 import Team from '@server/models/Team';
 import { migrations } from '@server/storage/database';
-import { SearchIndex } from '../../plugins/openai/server/SearchIndex';
+import { SearchIndex } from '../../plugins/openai/server/searchIndex';
 import { getArg } from './args';
 
 export async function checkPendingMigrations() {
