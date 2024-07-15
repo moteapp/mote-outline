@@ -50,5 +50,5 @@ VOLUME /var/lib/mote/data
 
 USER nodejs
 
-EXPOSE 3000
+EXPOSE 80
 CMD ["yarn", "start"]

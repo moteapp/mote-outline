@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: moteapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4df7c31a4b3e41d085f9e2a9d6fb598d }}/mote-app:${{ github.sha }}
+        tags: moteapp.azurecr.io/mote-app:latest
         file: ./Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'getmote'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_44a5212681e14dffb771c3aa9a9aa7b6 }}
-        images: 'moteapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4df7c31a4b3e41d085f9e2a9d6fb598d }}/mote-app:${{ github.sha }}'
+        images: 'moteapp.azurecr.io/mote-app:latest'

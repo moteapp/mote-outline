@@ -25,17 +25,18 @@ const ExpiryDatePicker = ({ selectedDate, onSelect }: Props) => {
   const popover = usePopoverState({ gutter: 0, placement: "right" });
   const popoverContentRef = React.useRef<HTMLDivElement>(null);
 
+  const themedStyles = {
+    "--rdp-caption-font-size": "16px",
+    "--rdp-cell-size": "34px",
+    "--rdp-selected-text": theme.accentText,
+    "--rdp-accent-color": theme.accent,
+    "--rdp-accent-color-dark": theme.accent,
+    "--rdp-background-color": theme.listItemHoverBackground,
+    "--rdp-background-color-dark": theme.listItemHoverBackground,
+  } as React.CSSProperties
+
   const styles = React.useMemo(
-    () =>
-      ({
-        "--rdp-caption-font-size": "16px",
-        "--rdp-cell-size": "34px",
-        "--rdp-selected-text": theme.accentText,
-        "--rdp-accent-color": theme.accent,
-        "--rdp-accent-color-dark": theme.accent,
-        "--rdp-background-color": theme.listItemHoverBackground,
-        "--rdp-background-color-dark": theme.listItemHoverBackground,
-      } as React.CSSProperties),
+    () => themedStyles,
     [theme]
   );
 
