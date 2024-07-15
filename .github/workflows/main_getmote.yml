@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - getmote
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: https://moteapp.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_4df7c31a4b3e41d085f9e2a9d6fb598d }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_8fcf06317bad48caaa9ca310ee443d6a }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: moteapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4df7c31a4b3e41d085f9e2a9d6fb598d }}/mote-app:${{ github.sha }}
+        file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'getmote'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_44a5212681e14dffb771c3aa9a9aa7b6 }}
+        images: 'moteapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4df7c31a4b3e41d085f9e2a9d6fb598d }}/mote-app:${{ github.sha }}'
