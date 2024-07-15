@@ -688,6 +688,35 @@ router.post(
             );
         }
 
+    if (document.deletedAt) {
+      authorize(user, "restore", document);
+      // restore a previously deleted document
+      await document.unarchive(user);
+      await Event.createFromContext(ctx, {
+        name: "documents.restore",
+        documentId: document.id,
+        collectionId: document.collectionId,
+        data: {
+          title: document.title,
+        },
+      });
+    } else if (document.archivedAt) {
+      authorize(user, "unarchive", document);
+      // restore a previously archived document
+      await document.unarchive(user);
+      await Event.createFromContext(ctx, {
+        name: "documents.unarchive",
+        documentId: document.id,
+        collectionId: document.collectionId,
+        data: {
+          title: document.title,
+        },
+      });
+    } else if (revisionId) {
+      // restore a document to a specific revision
+      authorize(user, "update", document);
+      const revision = await Revision.findByPk(revisionId);
+      authorize(document, "restore", revision);
         if (document.deletedAt) {
             authorize(user, 'restore', document);
             // restore a previously deleted document
@@ -1209,15 +1238,15 @@ router.post(
         });
         authorize(user, 'archive', document);
 
-        await document.archive(user.id);
-        await Event.createFromContext(ctx, {
-            name: 'documents.archive',
-            documentId: document.id,
-            collectionId: document.collectionId,
-            data: {
-                title: document.title,
-            },
-        });
+    await document.archive(user.id);
+    await Event.createFromContext(ctx, {
+      name: "documents.archive",
+      documentId: document.id,
+      collectionId: document.collectionId,
+      data: {
+        title: document.title,
+      },
+    });
 
         ctx.body = {
             data: await presentDocument(ctx, document),
@@ -1257,16 +1286,16 @@ router.post(
 
             authorize(user, 'delete', document);
 
-            await document.delete(user.id);
-            await Event.createFromContext(ctx, {
-                name: 'documents.delete',
-                documentId: document.id,
-                collectionId: document.collectionId,
-                data: {
-                    title: document.title,
-                },
-            });
-        }
+      await document.delete(user.id);
+      await Event.createFromContext(ctx, {
+        name: "documents.delete",
+        documentId: document.id,
+        collectionId: document.collectionId,
+        data: {
+          title: document.title,
+        },
+      });
+    }
 
         ctx.body = {
             success: true,
@@ -1298,15 +1327,15 @@ router.post(
             );
         }
 
-        await document.unpublish(user.id);
-        await Event.createFromContext(ctx, {
-            name: 'documents.unpublish',
-            documentId: document.id,
-            collectionId: document.collectionId,
-            data: {
-                title: document.title,
-            },
-        });
+    await document.unpublish(user.id);
+    await Event.createFromContext(ctx, {
+      name: "documents.unpublish",
+      documentId: document.id,
+      collectionId: document.collectionId,
+      data: {
+        title: document.title,
+      },
+    });
 
         ctx.body = {
             data: await presentDocument(ctx, document),
