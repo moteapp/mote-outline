@@ -303,6 +303,22 @@ class User extends ParanoidModel<
             .toUpperCase();
     }
 
+    /**
+     * Return a code that can be used to confirm a one-time action.
+     *
+     * This code is not stored in the database and is only valid for a short period of time.
+     */
+    get oneTimeConfirmationCode() {
+        const secret = crypto.randomBytes(64).toString('hex');
+        return crypto
+            .createHash('md5')
+            .update(secret)
+            .digest('hex')
+            .replace(/[l1IoO0]/gi, '')
+            .slice(0, 8)
+            .toUpperCase();
+    }
+
     // instance methods
 
     /**

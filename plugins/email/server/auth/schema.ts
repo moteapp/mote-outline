@@ -1,22 +1,33 @@
-import { z } from "zod";
-import { Client } from "@shared/types";
-import { BaseSchema } from "@server/routes/api/schema";
+import { z } from 'zod';
+import { Client } from '@shared/types';
+import { BaseSchema } from '@server/routes/api/schema';
 
 export const EmailSchema = BaseSchema.extend({
-  body: z.object({
-    email: z.string().email(),
-    client: z.nativeEnum(Client).default(Client.Web),
-  }),
+    body: z.object({
+        email: z.string().email(),
+        client: z.nativeEnum(Client).default(Client.Web),
+    }),
 });
 
 export type EmailReq = z.infer<typeof EmailSchema>;
 
 export const EmailCallbackSchema = BaseSchema.extend({
-  query: z.object({
-    token: z.string(),
-    client: z.nativeEnum(Client).default(Client.Web),
-    follow: z.string().default(""),
-  }),
+    query: z.object({
+        token: z.string(),
+        client: z.nativeEnum(Client).default(Client.Web),
+        follow: z.string().default(''),
+    }),
 });
 
 export type EmailCallbackReq = z.infer<typeof EmailCallbackSchema>;
+
+export const OTPCallbackSchema = BaseSchema.extend({
+    query: z.object({
+        token: z.string().optional(),
+        client: z.nativeEnum(Client).default(Client.Web),
+        code: z.string().optional(),
+        email: z.string().email(),
+    }),
+});
+
+export type OTPCallbackReq = z.infer<typeof OTPCallbackSchema>;

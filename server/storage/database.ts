@@ -29,12 +29,11 @@ export function createDatabaseInstance(
     logQueryParameters: env.isDevelopment,
     dialectOptions: {
       ssl:
-        env.isProduction && !isSSLDisabled
-          ? {
+       {
               // Ref.: https://github.com/brianc/node-postgres/issues/2009
               rejectUnauthorized: false,
             }
-          : false,
+         
     },
     models: Object.values(models),
     pool: {

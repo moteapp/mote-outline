@@ -4,6 +4,7 @@ import Router from 'koa-router';
 import { NotificationEventType } from '@shared/types';
 import { parseDomain } from '@shared/utils/domains';
 import accountProvisioner from '@server/commands/accountProvisioner';
+import ConfirmUserSignInEmail from '@server/emails/templates/ConfirmUserSignInEmail';
 import InviteAcceptedEmail from '@server/emails/templates/InviteAcceptedEmail';
 import SigninEmail from '@server/emails/templates/SigninEmail';
 import SignupEmail from '@server/emails/templates/SignupEmail';
@@ -15,11 +16,12 @@ import passportMiddleware from '@server/middlewares/passport';
 import { rateLimiter } from '@server/middlewares/rateLimiter';
 import validate from '@server/middlewares/validate';
 import { User, Team } from '@server/models';
+import Redis from '@server/storage/redis';
 import { APIContext } from '@server/types';
 import { RateLimiterStrategy } from '@server/utils/RateLimiter';
 import { signIn } from '@server/utils/authentication';
 import { getUserForEmailSigninToken } from '@server/utils/jwt';
-import { MagicLinkStrategy } from './magicLinkStragetgy';
+import { generateOTPKey, MagicLinkStrategy } from './magicLinkStragetgy';
 import * as T from './schema';
 
 const router = new Router();
@@ -93,6 +95,54 @@ router.post(
     }
 );
 router.get('magiclink.callback', passportMiddleware(providerName));
+
+router.post(
+    'otp',
+    rateLimiter(RateLimiterStrategy.TenPerHour),
+    validate(T.EmailSchema),
+    async (ctx: APIContext<T.EmailReq>) => {
+        const payload = ctx.input.body;
+
+        const token = JWT.sign(
+            {
+                user: payload,
+                iat: Math.floor(Date.now() / 1000),
+            },
+            strategy.options.secret,
+            {
+                expiresIn: strategy.ttl,
+            }
+        );
+        const confirmationCode = Math.floor(100000 + Math.random() * 900000)
+            .toString()
+            .slice(0, 6);
+
+        // Save the confirmation code in Redis
+        await Redis.defaultClient.set(
+            generateOTPKey(payload.email),
+            confirmationCode,
+            'EX',
+            5 * 60,
+            'NX'
+        );
+
+        // Send the OPT via email
+        await new ConfirmUserSignInEmail({
+            to: payload.email,
+            token,
+            teamUrl: '',
+            client: payload.client,
+            confirmationCode,
+        }).schedule();
+
+        // respond with success regardless of whether an email was sent
+        ctx.body = {
+            success: true,
+        };
+    }
+);
+
+router.get('otp.callback', passportMiddleware(providerName));
 
 router.post(
     'email',

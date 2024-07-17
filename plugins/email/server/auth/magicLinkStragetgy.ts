@@ -1,6 +1,7 @@
 import JWT from 'jsonwebtoken';
 import { Strategy } from 'passport-strategy';
 import Logger from '@server/logging/Logger';
+import RedisAdapter from '@server/storage/redis';
 
 export interface IMagicLinkStrategyOptions {
     secret: string;
@@ -44,8 +45,7 @@ export class MagicLinkStrategy extends Strategy {
         }
 
         // Accept token logic
-        // ====================================
-        if (sanitizedOptions.action === 'acceptToken') {
+        if (req.query[this.options.tokenField]) {
             return this.acceptToken(req, sanitizedOptions);
         }
 
@@ -97,4 +97,32 @@ export class MagicLinkStrategy extends Strategy {
 
         return this.success(user, info);
     }
+
+    async acceptOTP(req: any, _: any) {
+        const { email, code } = req.query;
+
+        if (!email || !code) {
+            return this.fail({ message: 'Email or Code missing' }, 401);
+        }
+
+        const confirmationCode = await RedisAdapter.defaultClient.get(
+            generateOTPKey(email)
+        );
+
+        if (confirmationCode !== code) {
+            return this.fail({ message: 'Invalid code' }, 401);
+        }
+
+        const { user, info } = await this.verifyUser({ email });
+
+        if (!user) {
+            return this.fail({ message: 'User not found' }, 400);
+        }
+
+        return this.success(user, info);
+    }
+}
+
+export function generateOTPKey(user: string) {
+    return `otp:${user}`;
 }
