@@ -49,6 +49,11 @@ export class MagicLinkStrategy extends Strategy {
             return this.acceptToken(req, sanitizedOptions);
         }
 
+        // Accept OTP logic
+        if (req.query.email && req.query.code) {
+            return this.acceptOTP(req, sanitizedOptions);
+        }
+
         return this.error(new Error('Unknown action'));
     }
 
