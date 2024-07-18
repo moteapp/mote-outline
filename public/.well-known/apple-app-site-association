@@ -1,0 +1,22 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "GA87294FZB.dev.mote.app",
+        "paths": [
+            "/auth/*",
+            "/doc/*",
+            "/s/*",
+            "/home"
+        ]
+      }
+    ]
+  },
+  "activitycontinuation": {
+    "apps": ["GA87294FZB.dev.mote.app"]
+  },
+  "webcredentials": {
+    "apps": ["GA87294FZB.dev.mote.app"]
+  }
+}
