@@ -124,6 +124,7 @@ export class MagicLinkStrategy extends Strategy {
             return this.fail({ message: 'User not found' }, 400);
         }
 
+        Logger.info('authentication', `accept OTP for user:${email}`);
         return this.success(user, info);
     }
 }

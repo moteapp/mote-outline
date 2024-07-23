@@ -117,6 +117,12 @@ router.post(
             .toString()
             .slice(0, 6);
 
+        Logger.info(
+            'authentication',
+            `send otp to user:${JSON.stringify(
+                payload
+            )}, code:${confirmationCode}`
+        );
         // Save the confirmation code in Redis
         await Redis.defaultClient.set(
             generateOTPKey(payload.email),
