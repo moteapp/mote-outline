@@ -1,4 +1,5 @@
 import passport from '@outlinewiki/koa-passport';
+import { addMonths } from 'date-fns';
 import JWT from 'jsonwebtoken';
 import Router from 'koa-router';
 import { NotificationEventType } from '@shared/types';
@@ -27,6 +28,30 @@ import * as T from './schema';
 const router = new Router();
 const providerName = 'magiclink';
 
+async function verifyUser(user: any) {
+    const name = user.email.split('@')[0];
+    const result = await accountProvisioner({
+        ip: '',
+        team: {
+            name,
+            subdomain: '',
+        },
+        user: {
+            name,
+            email: user.email,
+        },
+        authenticationProvider: {
+            name: providerName,
+            providerId: user.email,
+        },
+        authentication: {
+            providerId: user.email,
+            scopes: [],
+        },
+    });
+    return { user: result.user, info: result };
+}
+
 const strategy = new MagicLinkStrategy(
     {
         secret: env.SECRET_KEY,
@@ -44,29 +69,7 @@ const strategy = new MagicLinkStrategy(
             client: user.client,
         }).schedule();
     },
-    async function verifyUser(user: any) {
-        const name = user.email.split('@')[0];
-        const result = await accountProvisioner({
-            ip: '',
-            team: {
-                name,
-                subdomain: '',
-            },
-            user: {
-                name,
-                email: user.email,
-            },
-            authenticationProvider: {
-                name: providerName,
-                providerId: user.email,
-            },
-            authentication: {
-                providerId: user.email,
-                scopes: [],
-            },
-        });
-        return { user: result.user, info: result };
-    }
+    verifyUser
 );
 strategy.name = providerName;
 passport.use(strategy);
@@ -149,6 +152,42 @@ router.post(
 );
 
 router.get('otp.callback', passportMiddleware(providerName));
+
+router.get(
+    'otp.verify',
+    validate(T.OTPCallbackSchema),
+    async (ctx: APIContext<T.OTPCallbackReq>) => {
+        const { email, code } = ctx.input.query;
+
+        const confirmationCode = await Redis.defaultClient.get(
+            generateOTPKey(email)
+        );
+
+        if (confirmationCode !== code) {
+            ctx.body = {
+                success: false,
+            };
+            return;
+        }
+
+        const { user } = await verifyUser({ email });
+
+        if (!user) {
+            ctx.body = {
+                success: false,
+            };
+            return;
+        }
+
+        const expires = addMonths(new Date(), 3);
+        ctx.body = {
+            success: true,
+            data: {
+                token: user.getJwtToken(expires),
+            },
+        };
+    }
+);
 
 router.post(
     'email',
